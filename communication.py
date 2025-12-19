@@ -1,21 +1,18 @@
-from machine import UART, Pin
+from machine import UART, Pin 
 import time
 
-# UART setup for Coral communication [cite: 35, 61]
-uart = UART(0, baudrate=115200, tx=Pin(0), rx=Pin(1))
+uart = UART(0, baudrate=115200, tx=Pin(0), rx=Pin(1)) 
 
-def get_ml_signal():
+def get_ml_signal(): 
     if uart.any():
-        signal = uart.read(1).decode('utf-8')
-        if signal == 'bucketnoheld': 
+        line = uart.readline().decode('utf-8').strip() 
+        if "bucketnoheld" in line:
             return "bucket"
-    return None
+    return None 
 
-def wait_for_keyword(target):
-    print(f"Listening for: {target}")
-    while True:
-        if uart.any():
-            word = uart.readline().decode('utf-8').strip()
-            if word == target:
-                return True
-        time.sleep(0.1)
+def get_voice_command(): 
+    if uart.any(): 
+        word = uart.readline().decode('utf-8').strip().lower()
+        if word in ["go", "left", "right"]:
+            return word 
+    return None 
