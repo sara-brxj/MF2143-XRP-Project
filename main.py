@@ -1,4 +1,4 @@
-import robot_commands as rc
+import hardware_commands as rc
 import communication as comm
 import time
 
